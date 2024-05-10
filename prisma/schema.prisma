@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model author {
+  a_id         Int      @id @default(autoincrement())
+  a_name       String?  @db.VarChar(255)
+  a_dynasty_id Int?
+  a_img_path   String?  @db.VarChar(255)
+  dynasty      dynasty? @relation(fields: [a_dynasty_id], references: [d_id], onDelete: NoAction, onUpdate: NoAction)
+  poetry       poetry[]
+}
+
+model collection {
+  c_id   Int      @id @default(autoincrement())
+  c_name String?  @db.VarChar(255)
+  c_note String?
+  poetry poetry[]
+}
+
+model dynasty {
+  d_id       Int      @id @default(autoincrement())
+  d_name     String?  @db.VarChar(255)
+  d_img_path String?  @db.VarChar(255)
+  author     author[]
+}
+
+model poetry {
+  p_id            Int         @id @default(autoincrement())
+  p_title         String?     @db.VarChar(255)
+  p_author_id     Int?
+  p_rhythmic_id   Int?
+  p_paragraph     String?
+  p_note          String?
+  p_collection_id Int?
+  p_other         String?     @db.VarChar(255)
+  p_img_path      String?     @db.VarChar(255)
+  author          author?     @relation(fields: [p_author_id], references: [a_id], onDelete: NoAction, onUpdate: NoAction)
+  collection      collection? @relation(fields: [p_collection_id], references: [c_id], onDelete: NoAction, onUpdate: NoAction)
+  rhythmic        rhythmic?   @relation(fields: [p_rhythmic_id], references: [r_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model rhythmic {
+  r_id       Int      @id @default(autoincrement())
+  r_name     String?  @db.VarChar(255)
+  r_note     String?  @db.VarChar(255)
+  r_img_path String?  @db.VarChar(255)
+  poetry     poetry[]
+}
