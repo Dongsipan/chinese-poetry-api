@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: './src/main',
   target: 'node',
+  // 打包后的文件名称以及位置
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
