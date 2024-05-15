@@ -8,16 +8,5 @@ export const swaggerConfig = new DocumentBuilder()
 
 export const createSwaggerDocument = (app) => {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  const swaggerCDN = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.11.2';
-  if (process.env.NODE_ENV === 'development') {
-    SwaggerModule.setup('', app, document);
-  } else {
-    SwaggerModule.setup('', app, document, {
-      customCssUrl: [`${swaggerCDN}/swagger-ui.css`],
-      customJs: [
-        `${swaggerCDN}/swagger-ui-bundle.js`,
-        `${swaggerCDN}/swagger-ui-standalone-preset.js`,
-      ],
-    });
-  }
+  SwaggerModule.setup('', app, document);
 };
