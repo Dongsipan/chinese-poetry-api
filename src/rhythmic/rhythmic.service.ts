@@ -7,6 +7,18 @@ import { convertToSimplified } from '../utils/convert.to.simplified';
 export class RhythmicService {
   constructor(private prisma: PrismaService) {}
 
+  getRhythmic(page_size: number, page_index: number) {
+    if (!page_index) {
+      page_index = 1;
+    }
+    if (!page_size) {
+      page_size = 20;
+    }
+    return this.prisma.rhythmic.findMany({
+      skip: (page_index - 1) * page_size,
+      take: page_size,
+    });
+  }
   searchRhythmic(params: RhythmicSearchParams) {
     if (!params.page_index) {
       params.page_index = 1;

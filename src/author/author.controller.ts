@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthorService } from './author.service';
 import { AuthorSearchParams } from './entities/author.search.params';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiQuery } from '@nestjs/swagger';
 
 @Controller('author')
 export class AuthorController {
@@ -45,5 +45,11 @@ export class AuthorController {
     @Query('page_index', ParseIntPipe) page_index: number,
   ) {
     return this.authorService.getAuthorPoetry(id, page_size, page_index);
+  }
+
+  @ApiOperation({ summary: '获取随机作者' })
+  @Get('random')
+  getRandomAuthor(@Query('limit', ParseIntPipe) limit: number) {
+    return this.authorService.getRandomAuthor(limit);
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthorSearchParams } from './entities/author.search.params';
 import { convertToSimplified } from '../utils/convert.to.simplified';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuthorService {
@@ -48,6 +49,13 @@ export class AuthorService {
       item.p_title = convertToSimplified(item.p_title);
       item.p_paragraph = convertToSimplified(item.p_paragraph);
     });
+    return result;
+  }
+
+  getRandomAuthor(limit: number) {
+    const result = this.prisma.$queryRaw(
+      Prisma.sql`SELECT * FROM author ORDER BY RANDOM() LIMIT ${limit}`,
+    );
     return result;
   }
 }

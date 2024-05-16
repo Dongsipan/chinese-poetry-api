@@ -25,6 +25,13 @@ export class PoetryController {
     return this.poetryService.searchPoetry(searchParams);
   }
 
+  @ApiOperation({ summary: '获取一个随机诗词' })
+  @Get('random')
+  getRandomPoetry() {
+    debugger;
+    return this.poetryService.getPoetryByRhythmic();
+  }
+
   @ApiOperation({ summary: '通过 id 查询 诗词' })
   @ApiParam({
     name: 'id',

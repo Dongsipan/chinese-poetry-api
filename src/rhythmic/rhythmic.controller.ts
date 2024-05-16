@@ -16,6 +16,15 @@ import { ApiBody, ApiOperation } from '@nestjs/swagger';
 export class RhythmicController {
   constructor(private readonly rhythmicService: RhythmicService) {}
 
+  @ApiOperation({ summary: '获取rhythmic 列表' })
+  @Get()
+  getRhythmic(
+    @Query('page_size', ParseIntPipe) page_size: number,
+    @Query('page_index', ParseIntPipe) page_index: number,
+  ) {
+    return this.rhythmicService.getRhythmic(page_size, page_index);
+  }
+
   @ApiOperation({ summary: '通过关键字查询 词牌/韵律' })
   @ApiBody({
     type: RhythmicSearchParams,

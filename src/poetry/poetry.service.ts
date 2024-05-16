@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PoetrySearchParams } from './entities/poetry.search.params';
 import { convertToSimplified } from '../utils/convert.to.simplified';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PoetryService {
   constructor(private prisma: PrismaService) {}
+
   searchPoetry(searchParams: PoetrySearchParams) {
     if (!searchParams.page_index) {
       searchParams.page_index = 1;
@@ -67,6 +69,19 @@ export class PoetryService {
     });
     result.p_other = result.p_paragraph;
     result.p_paragraph = convertToSimplified(result.p_paragraph); // 繁体转简体
+    return result;
+  }
+
+  async getPoetryByRhythmic() {
+    const result = await this.prisma.$queryRaw(
+      Prisma.sql`SELECT * FROM poetry ORDER BY RANDOM() LIMIT 1;`,
+    );
+    if (result[0] && result[0].p_title) {
+      result[0].p_title = convertToSimplified(result[0].p_title);
+    }
+    if (result[0] && result[0].p_paragraph) {
+      result[0].p_paragraph = convertToSimplified(result[0].p_paragraph);
+    }
     return result;
   }
 }
