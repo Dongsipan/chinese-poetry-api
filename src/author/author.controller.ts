@@ -22,7 +22,7 @@ export class AuthorController {
     return this.authorService.searchAuthor(params);
   }
 
-  @ApiOperation({ summary: '通过 id 查询 作者的诗词' })
+  @ApiOperation({ summary: '通过author的Id查询 诗词列表' })
   @ApiParam({
     name: 'id',
     type: Number,
