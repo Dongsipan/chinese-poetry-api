@@ -1,6 +1,14 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { PoetryService } from './poetry.service';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { PoetrySearchParams } from './entities/poetry.search.params';
 
 @Controller('poetry')
@@ -15,5 +23,16 @@ export class PoetryController {
   @Post('search')
   searchPoetry(@Body(ValidationPipe) searchParams: PoetrySearchParams) {
     return this.poetryService.searchPoetry(searchParams);
+  }
+
+  @ApiOperation({ summary: '通过 id 查询 诗词' })
+  @ApiParam({
+    name: 'id',
+    type: Number,
+    description: '诗词 id',
+  })
+  @Get(':id')
+  getPoetryById(@Param('id', ParseIntPipe) id: number) {
+    return this.poetryService.getPoetryById(id);
   }
 }

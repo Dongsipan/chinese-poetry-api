@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PoetrySearchParams } from './entities/poetry.search.params';
+import { convertToSimplified } from '../utils/convert.to.simplified';
 
 @Injectable()
 export class PoetryService {
@@ -56,5 +57,16 @@ export class PoetryService {
         ...searchQuery,
       },
     });
+  }
+
+  async getPoetryById(id: number) {
+    const result = await this.prisma.poetry.findUnique({
+      where: {
+        p_id: id,
+      },
+    });
+    result.p_other = result.p_paragraph;
+    result.p_paragraph = convertToSimplified(result.p_paragraph); // 繁体转简体
+    return result;
   }
 }

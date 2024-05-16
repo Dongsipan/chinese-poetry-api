@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthorSearchParams } from './entities/author.search.params';
+import { convertToSimplified } from '../utils/convert.to.simplified';
 
 @Injectable()
 export class AuthorService {
@@ -22,5 +23,31 @@ export class AuthorService {
         },
       },
     });
+  }
+
+  async getAuthorPoetry(id: number, page_size: number, page_index: number) {
+    if (!page_index) {
+      page_index = 1;
+    }
+    if (!page_size) {
+      page_size = 20;
+    }
+    const result = await this.prisma.poetry.findMany({
+      skip: (page_index - 1) * page_size,
+      take: page_size,
+      where: {
+        author: {
+          is: {
+            a_id: id,
+          },
+        },
+      },
+    });
+
+    result.forEach((item) => {
+      item.p_title = convertToSimplified(item.p_title);
+      item.p_paragraph = convertToSimplified(item.p_paragraph);
+    });
+    return result;
   }
 }
