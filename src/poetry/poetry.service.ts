@@ -74,7 +74,7 @@ export class PoetryService {
 
   async getPoetryByRhythmic() {
     const result = await this.prisma.$queryRaw(
-      Prisma.sql`SELECT * FROM poetry ORDER BY RANDOM() LIMIT 1;`,
+      Prisma.sql`SELECT * FROM "public".poetry ORDER BY RANDOM() LIMIT 1;`,
     );
     if (result[0] && result[0].p_title) {
       result[0].p_title = convertToSimplified(result[0].p_title);

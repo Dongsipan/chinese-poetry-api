@@ -54,7 +54,7 @@ export class AuthorService {
 
   getRandomAuthor(limit: number) {
     const result = this.prisma.$queryRaw(
-      Prisma.sql`SELECT * FROM author ORDER BY RANDOM() LIMIT ${limit}`,
+      Prisma.sql`SELECT * FROM "public".author ORDER BY RANDOM() LIMIT ${limit}`,
     );
     return result;
   }

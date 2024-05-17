@@ -28,7 +28,6 @@ export class PoetryController {
   @ApiOperation({ summary: '获取一个随机诗词' })
   @Get('random')
   getRandomPoetry() {
-    debugger;
     return this.poetryService.getPoetryByRhythmic();
   }
 
