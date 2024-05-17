@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PoetrySearchParams } from './entities/poetry.search.params';
 import { convertToSimplified } from '../utils/convert.to.simplified';
 import { Prisma } from '@prisma/client';
+import { IResponse } from "../interface/IResponse";
+import { PoetryEntity } from "./entities/poetry.entity";
 
 @Injectable()
 export class PoetryService {

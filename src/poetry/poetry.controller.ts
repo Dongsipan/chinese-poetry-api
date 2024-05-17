@@ -10,6 +10,8 @@ import {
 import { PoetryService } from './poetry.service';
 import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { PoetrySearchParams } from './entities/poetry.search.params';
+import { PoetryEntity } from './entities/poetry.entity';
+import { ApiDataResponse } from '../api-data-response/api-data-response.decorator';
 
 @Controller('poetry')
 export class PoetryController {
@@ -26,6 +28,7 @@ export class PoetryController {
   }
 
   @ApiOperation({ summary: '获取一个随机诗词' })
+  @ApiDataResponse(PoetryEntity)
   @Get('random')
   getRandomPoetry() {
     return this.poetryService.getPoetryByRhythmic();
