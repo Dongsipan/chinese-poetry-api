@@ -3,14 +3,12 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PoetrySearchParams } from './entities/poetry.search.params';
 import { convertToSimplified } from '../utils/convert.to.simplified';
 import { Prisma } from '@prisma/client';
-import { IResponse } from "../interface/IResponse";
-import { PoetryEntity } from "./entities/poetry.entity";
 
 @Injectable()
 export class PoetryService {
   constructor(private prisma: PrismaService) {}
 
-  searchPoetry(searchParams: PoetrySearchParams) {
+  async searchPoetry(searchParams: PoetrySearchParams) {
     if (!searchParams.page_index) {
       searchParams.page_index = 1;
     }
@@ -54,13 +52,24 @@ export class PoetryService {
         },
       };
     }
-    return this.prisma.poetry.findMany({
+    const total = await this.prisma.poetry.count({
+      where: {
+        ...searchQuery,
+      },
+    });
+    const result = await this.prisma.poetry.findMany({
       skip: (searchParams.page_index - 1) * searchParams.page_size,
       take: searchParams.page_size,
       where: {
         ...searchQuery,
       },
     });
+    return {
+      list: result,
+      total: total,
+      pageIndex: searchParams.page_index,
+      pageSize: searchParams.page_size,
+    };
   }
 
   async getPoetryById(id: number) {

@@ -22,6 +22,7 @@ export class PoetryController {
     type: PoetrySearchParams,
     schema: { example: { keywords: '杜甫' } },
   })
+  @ApiDataResponse(PoetryEntity, true)
   @Post('search')
   searchPoetry(@Body(ValidationPipe) searchParams: PoetrySearchParams) {
     return this.poetryService.searchPoetry(searchParams);
